@@ -1,4 +1,4 @@
-import { Container, Divider, HStack, Text } from "@chakra-ui/react";
+import { Container, Divider, HStack, Heading, Tag, Text, VStack } from "@chakra-ui/react";
 import { Post, allPosts } from "contentlayer/generated";
 import dayjs from "dayjs";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
@@ -32,19 +32,26 @@ const Page: NextPage<PostProps> = ({ post }) => {
     <>
       <Head>
         <title>{post.title}</title>
-        <main>
-          <Container mx="auto" my="4" p="4" border="1" borderRadius="lg" maxWidth="720px">
-            <HStack justify="space-between">
-              <Text as="h1" fontSize="lg" fontWeight="bold">
-                {post.title}
-              </Text>
-              g<time dateTime={post.date}>{dayjs(post.date).format("YYYY/MM/DD")}</time>
-            </HStack>
-            <Divider w="full" />
-            <Text dangerouslySetInnerHTML={{ __html: post.body.html }} />
-          </Container>
-        </main>
       </Head>
+      <main>
+        <Container mx="auto" my="4" px="4" borderWidth="1px" borderRadius="lg" maxWidth="container.lg">
+          <VStack py="4">
+            <Text fontSize="sm">{post.category}</Text>
+            <Heading as="h1" fontSize="2xl" fontWeight="bold">
+              {post.title}
+            </Heading>
+            <time dateTime={post.date}>{dayjs(post.date).format("YYYY-MM-DD")}</time>
+            <Text color="gray.600">{post.author}</Text>
+            <HStack spacing="2">
+              {post.tags.map((tag) => (
+                <Tag key={tag}>{tag}</Tag>
+              ))}
+            </HStack>
+          </VStack>
+          <Divider w="full" />
+          <Container dangerouslySetInnerHTML={{ __html: post.body.html }} my="4" maxW="full"></Container>
+        </Container>
+      </main>
     </>
   );
 };
